@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AppLoading from 'expo-app-loading';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
@@ -17,15 +17,18 @@ export default function App() {
   const [dbInitialized, setDbInitialized] = useState(false);
 
   useEffect(() => {
+    SplashScreen.preventAutoHideAsync();
     init().then(() => {
       setDbInitialized(true);
+      SplashScreen.hideAsync();
     }).catch((err) => {
       console.log(err);
+      SplashScreen.hideAsync();
     });
   }, []);
   
   if (!dbInitialized) {
-    return <AppLoading />
+    return null;
   }
 
   return (
